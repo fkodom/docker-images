@@ -46,7 +46,7 @@ jobs:
           DOCKERFILE: docker/deeplearning/pytorch/Dockerfile
           TAG_FORMAT: py${{ matrix.python }}-torch${{ matrix.torch }}-cuda${{ matrix.cuda }}
         with:
-          file: ${{ matrix.dev && env.DOCKERFILE || join([env.DOCKERFILE, 'dev'], '.') }}
-          tags: ${{ env.IMAGE_NAME }}:${{ matrix.dev && env.TAG_FORMAT || join([env.TAG_FORMAT, 'dev'], '-') }}
+          file: ${{ matrix.dev && env.DOCKERFILE || format('{0}.{1}', env.DOCKERFILE, 'dev') }}
+          tags: ${{ env.IMAGE_NAME }}:${{ matrix.dev && env.TAG_FORMAT || format('{0}-{1}', env.TAG_FORMAT, 'dev') }}
           push: true
           no-cache: true
