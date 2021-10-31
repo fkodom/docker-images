@@ -43,8 +43,8 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         env:
-          - DOCKERFILE: docker/deeplearning/pytorch/Dockerfile
-          - TAG_FORMAT: py${{ matrix.python }}-torch${{ matrix.torch }}-cuda${{ matrix.cuda }}
+          DOCKERFILE: docker/deeplearning/pytorch/Dockerfile
+          TAG_FORMAT: py${{ matrix.python }}-torch${{ matrix.torch }}-cuda${{ matrix.cuda }}
         with:
           file: ${{ matrix.dev && env.DOCKERFILE || join(env.DOCKERFILE, 'dev', '.') }}
           tags: ${{ env.IMAGE_NAME }}:${{ matrix.dev && env.TAG_FORMAT || join(env.TAG_FORMAT, 'dev', '-') }}
