@@ -18,10 +18,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ubuntu: [20.04]
-        cuda: [11.4.2]
-        python: [3.9]
-        torch: [1.9, 1.10]
+        ubuntu: ["20.04"]
+        cuda: ["11.4.2"]
+        python: ["3.9"]
+        torch: ["1.9", "1.10"]
         dev: [false, true]
 
     steps:
