@@ -32,11 +32,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       
-      - name: Get current date
-        uses: josStorer/get-current-time@v2
-        id: current-date
-        with:
-          format: YYYYMMDD
+      - name: Set current date string
+        run: echo "DATE=$(date '+%Y%m%d')" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -51,7 +48,7 @@ jobs:
           file: docker/deeplearning/pytorch/Dockerfile
           tags: | 
             ${{ env.IMAGE_NAME }}:py${{ matrix.python }}-torch${{ matrix.torch }}-cuda${{ matrix.cuda }}
-            ${{ env.IMAGE_NAME }}:py${{ matrix.python }}-torch${{ matrix.torch }}-cuda${{ matrix.cuda }}-${{ steps.current-time.outputs.formattedTime }}
+            ${{ env.IMAGE_NAME }}:py${{ matrix.python }}-torch${{ matrix.torch }}-cuda${{ matrix.cuda }}-${{ env.DATE }}
           push: true
           no-cache: true
           build-args: |
