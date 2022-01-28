@@ -26,6 +26,6 @@ RUN add-apt-repository ppa:deadsnakes/ppa && apt update \
 
 RUN pip uninstall -y numpy
 RUN pip install --no-cache-dir \
-    torch==$TORCH_VERSION \
+    torch~=$TORCH_VERSION.0 \
     torchvision \
     torchaudio
