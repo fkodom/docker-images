@@ -1,4 +1,4 @@
-name: Docker - Deep Learning, Base
+name: Docker - Deep Learning, Flax
 
 on:
   workflow_dispatch:
@@ -21,12 +21,11 @@ jobs:
         ubuntu: ["20.04"]
         cuda: ["11.1.1"]
         python: ["3.9", "3.10"]
+        jax: ["0.3"]
+        flax: ["0.5"]
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -41,15 +40,17 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          file: docker/deeplearning/base/cuda.Dockerfile
+          file: docker/deeplearning/pytorch/cuda.Dockerfile
           tags: |
-            ${{ env.IMAGE_NAME }}:py${{ matrix.python }}-cuda${{ matrix.cuda }}
+            ${{ env.IMAGE_NAME }}:py${{ matrix.python }}-jax${{ matrix.jax }}-flax${{ matrix.flax }}-cuda${{ matrix.cuda }}
           push: true
           no-cache: true
           build-args: |
             UBUNTU_VERSION=${{ matrix.ubuntu }}
             CUDA_VERSION=${{ matrix.cuda }}
             PY_VERISON=${{ matrix.python }}
+            JAX_VERSION=${{ matrix.jax }}
+            FLAX_VERSION=${{ matrix.flag }}
 
   docker-cpu:
     runs-on: ubuntu-latest
@@ -59,12 +60,11 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.9", "3.10"]
+        jax: ["0.3"]
+        flax: ["0.5"]
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -79,10 +79,12 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          file: docker/deeplearning/base/cpu.Dockerfile
+          file: docker/deeplearning/pytorch/cpu.Dockerfile
           tags: |
-            ${{ env.IMAGE_NAME }}:py${{ matrix.python }}-cpu
+            ${{ env.IMAGE_NAME }}:py${{ matrix.python }}-jax${{ matrix.jax }}-flax${{ matrix.flax }}-cpu
           push: true
           no-cache: true
           build-args: |
             PY_VERISON=${{ matrix.python }}
+            JAX_VERSION=${{ matrix.jax }}
+            FLAX_VERSION=${{ matrix.flag }}

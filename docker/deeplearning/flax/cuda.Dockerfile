@@ -1,6 +1,6 @@
 ARG UBUNTU_VERSION=20.04
-ARG CUDA_VERSION=11.4.2
-ARG CUDA_OPSET=base
+ARG CUDA_VERSION=11.1.1
+ARG CUDA_OPSET=devel
 
 FROM nvidia/cuda:$CUDA_VERSION-$CUDA_OPSET-ubuntu$UBUNTU_VERSION
 ENV DEBIAN_FRONTEND="noninteractive"
@@ -13,7 +13,6 @@ RUN apt update --fix-missing \
     && rm -rf /var/lib/apt/lists/*
 
 ARG PY_VERSION=3.9
-ARG TORCH_VERSION=1.10
 
 RUN add-apt-repository ppa:deadsnakes/ppa && apt update \
     && apt install -y python$PY_VERSION-dev \
@@ -23,8 +22,12 @@ RUN add-apt-repository ppa:deadsnakes/ppa && apt update \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip uninstall -y numpy
+ARG JAX_VERSION=0.3
+ARG FLAX_VERSION=0.5
+
 RUN pip install --no-cache-dir \
-    torch~=$TORCH_VERSION.0 \
-    torchvision \
-    torchaudio
+    jax[cuda]~=$JAX_VERSION.0 \
+    jaxlib[cuda11_cudnn82] \
+    -f https://storage.googleapis.com/jax-releases/jax_releases.html \
+    && pip install --no-cache-dir flax~=$FLAX_VERSION.0
+    
