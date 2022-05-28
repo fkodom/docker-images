@@ -50,7 +50,7 @@ jobs:
             CUDA_VERSION=${{ matrix.cuda }}
             PY_VERISON=${{ matrix.python }}
             JAX_VERSION=${{ matrix.jax }}
-            FLAX_VERSION=${{ matrix.flag }}
+            FLAX_VERSION=${{ matrix.flax }}
 
   docker-cpu:
     runs-on: ubuntu-latest
@@ -87,4 +87,4 @@ jobs:
           build-args: |
             PY_VERISON=${{ matrix.python }}
             JAX_VERSION=${{ matrix.jax }}
-            FLAX_VERSION=${{ matrix.flag }}
+            FLAX_VERSION=${{ matrix.flax }}
